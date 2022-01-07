@@ -25,7 +25,6 @@ func ConnectDB(driver, host, database, username, password string, port, maxOpenC
 
 	db, err := sql.Open(driver, dsn)
 	if err != nil {
-		//debug.PrintStack()
 		return nil, err
 	}
 

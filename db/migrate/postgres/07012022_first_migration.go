@@ -17,7 +17,7 @@ var migrations = []struct {
 		stmt: createTableGames,
 	},
 	{
-		name: "create-table-usersgames",
+		name: "create-table-usergames",
 		stmt: createTableUserGames,
 	},
 }
@@ -43,7 +43,6 @@ func Migrate(db *sql.DB) error {
 		if err := insertMigration(db, migration.name); err != nil {
 			return err
 		}
-
 	}
 	return nil
 }
@@ -120,7 +119,7 @@ CREATE TABLE IF NOT EXISTS games(
 `
 
 var createTableUserGames = `
-CREATE TABLE IF NOT EXISTS UsersGames(
+CREATE TABLE IF NOT EXISTS UserGames(
     id SERIAL PRIMARY KEY,
     user_id SERIAL NOT NULL,
     game_id SERIAL NOT NULL,

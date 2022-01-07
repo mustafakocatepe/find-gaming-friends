@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type UsersGames struct {
+type UserGames struct {
 	Id        uint      `json:"id"`
 	UserId    string    `json:"user_id"`
 	GameId    string    `json:"game_id"`
@@ -16,4 +16,9 @@ type UsersGames struct {
 type UserGamesDTO struct {
 	UserId   int       `json:"user_id"`
 	GameList []GameDTO `json:"game_list"`
+}
+
+type CreateUserGamesDTO struct {
+	UserId int `json:"user_id"`
+	GameId int `json:"game_id"`
 }

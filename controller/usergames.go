@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -16,13 +17,13 @@ func (c Controller) GetUserGames(db *sql.DB) http.HandlerFunc {
 		var error model.Error
 		params := mux.Vars(r)
 
-		userGamesRepo := userGamesRepository.UsersGamesRepository{}
+		userGamesRepo := userGamesRepository.UserGamesRepository{}
 
 		userId, err := strconv.Atoi(params["id"])
 
 		if err != nil {
 			error.Message = "Incorrect id."
-			utils.SendError(w, http.StatusBadRequest, error)
+			utils.RespondWithError(w, http.StatusBadRequest, error)
 			return
 		}
 
@@ -32,10 +33,31 @@ func (c Controller) GetUserGames(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
-		utils.JSON(w, userGames, http.StatusOK)
+		utils.RespondWithJSON(w, userGames, http.StatusOK)
+	}
+}
+
+func (c Controller) AddUserGames(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		var createUserGamesDTO model.CreateUserGamesDTO
+		var error model.Error
+
+		json.NewDecoder(r.Body).Decode(&createUserGamesDTO)
+
+		userGamesRepo := userGamesRepository.UserGamesRepository{}
+		err := userGamesRepo.AddUserGames(db, createUserGamesDTO.UserId, createUserGamesDTO.GameId)
+
+		if err != nil {
+			error.Message = "Server Error"
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
+			return
+		}
+
+		utils.RespondWithJSON(w, "", http.StatusOK)
 	}
 }

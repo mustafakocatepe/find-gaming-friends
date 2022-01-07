@@ -25,11 +25,11 @@ func (c Controller) GetGames(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server Error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
-		utils.JSON(w, games, http.StatusOK)
+		utils.RespondWithJSON(w, games, http.StatusOK)
 	}
 }
 
@@ -44,7 +44,7 @@ func (c Controller) AddGame(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = err.Error()
-			utils.SendError(w, http.StatusBadRequest, error)
+			utils.RespondWithError(w, http.StatusBadRequest, error)
 			return
 		}
 
@@ -61,10 +61,10 @@ func (c Controller) AddGame(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server Error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
-		utils.JSON(w, gameId, http.StatusOK)
+		utils.RespondWithJSON(w, gameId, http.StatusOK)
 	}
 }

@@ -21,7 +21,7 @@ func (c Controller) LoginControl(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = err.Error()
-			utils.SendError(w, http.StatusBadRequest, error)
+			utils.RespondWithError(w, http.StatusBadRequest, error)
 			return
 		}
 
@@ -33,15 +33,15 @@ func (c Controller) LoginControl(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server Error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
 		if success {
-			utils.JSON(w, "Login successful ", http.StatusOK)
+			utils.RespondWithJSON(w, "Login successful ", http.StatusOK)
 		} else {
 			error.Message = "Login Failed"
-			utils.SendError(w, http.StatusUnauthorized, error)
+			utils.RespondWithError(w, http.StatusUnauthorized, error)
 		}
 	}
 }

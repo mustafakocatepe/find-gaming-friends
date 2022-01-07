@@ -30,11 +30,11 @@ func (c Controller) GetUsers(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server Error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
-		utils.JSON(w, users, http.StatusOK)
+		utils.RespondWithJSON(w, users, http.StatusOK)
 	}
 }
 
@@ -49,7 +49,7 @@ func (c Controller) AddUser(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = err.Error()
-			utils.SendError(w, http.StatusBadRequest, error)
+			utils.RespondWithError(w, http.StatusBadRequest, error)
 			return
 		}
 
@@ -69,11 +69,11 @@ func (c Controller) AddUser(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server Error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
-		utils.JSON(w, userId, http.StatusOK)
+		utils.RespondWithJSON(w, userId, http.StatusOK)
 	}
 }
 
@@ -88,7 +88,7 @@ func (c Controller) RemoveUser(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Incorrect id."
-			utils.SendError(w, http.StatusBadRequest, error)
+			utils.RespondWithError(w, http.StatusBadRequest, error)
 			return
 		}
 
@@ -96,11 +96,11 @@ func (c Controller) RemoveUser(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
-		utils.JSON(w, rowsAffected, http.StatusNoContent)
+		utils.RespondWithJSON(w, rowsAffected, http.StatusNoContent)
 	}
 }
 
@@ -114,7 +114,7 @@ func (c Controller) UpdateUser(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Incorrect id."
-			utils.SendError(w, http.StatusBadRequest, error)
+			utils.RespondWithError(w, http.StatusBadRequest, error)
 			return
 		}
 
@@ -140,12 +140,12 @@ func (c Controller) UpdateUser(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
 		w.Header().Set("Content-Type", "text/plain")
 
-		utils.JSON(w, "", http.StatusNoContent)
+		utils.RespondWithJSON(w, "", http.StatusNoContent)
 	}
 }

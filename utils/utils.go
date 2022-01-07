@@ -8,11 +8,11 @@ import (
 	"github.com/mustafakocatepe/find-gaming-friends/model"
 )
 
-func SendError(w http.ResponseWriter, status int, err model.Error) {
-	JSON(w, &model.Error{Code: status, Message: err.Message, Success: false}, status)
+func RespondWithError(w http.ResponseWriter, status int, err model.Error) {
+	RespondWithJSON(w, &model.Error{Code: status, Message: err.Message, Success: false}, status)
 }
 
-func JSON(w http.ResponseWriter, v interface{}, status int) {
+func RespondWithJSON(w http.ResponseWriter, v interface{}, status int) {
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(status)
