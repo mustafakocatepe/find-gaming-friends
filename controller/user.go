@@ -103,3 +103,49 @@ func (c Controller) RemoveUser(db *sql.DB) http.HandlerFunc {
 		utils.JSON(w, rowsAffected, http.StatusNoContent)
 	}
 }
+
+func (c Controller) UpdateUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var userDTO model.UpdateUserDTO
+		var error model.Error
+
+		params := mux.Vars(r)
+		id, err := strconv.Atoi(params["id"])
+
+		if err != nil {
+			error.Message = "Incorrect id."
+			utils.SendError(w, http.StatusBadRequest, error)
+			return
+		}
+
+		json.NewDecoder(r.Body).Decode(&userDTO)
+
+		var user model.User
+		user.Id = id
+
+		if len(userDTO.UserName) != 0 {
+			user.UserName = userDTO.UserName
+		}
+
+		if len(userDTO.Email) != 0 {
+			user.Email = userDTO.Email
+		}
+
+		if len(userDTO.Bio) != 0 {
+			user.Bio = userDTO.Bio
+		}
+
+		userRepo := userRepository.UserRepository{}
+		_, err = userRepo.UpdateUser(db, user)
+
+		if err != nil {
+			error.Message = "Server error"
+			utils.SendError(w, http.StatusInternalServerError, error)
+			return
+		}
+
+		w.Header().Set("Content-Type", "text/plain")
+
+		utils.JSON(w, "", http.StatusNoContent)
+	}
+}

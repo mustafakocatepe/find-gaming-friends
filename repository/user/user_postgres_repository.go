@@ -3,6 +3,7 @@ package userRepository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/mustafakocatepe/find-gaming-friends/model"
 	"golang.org/x/crypto/bcrypt"
@@ -91,4 +92,24 @@ func (u UserRepository) Login(db *sql.DB, loginDTO model.LoginDTO) (bool, error)
 	}
 
 	return false, nil
+}
+
+func (U UserRepository) UpdateUser(db *sql.DB, user model.User) (int64, error) {
+
+	query := "UPDATE users SET username=$1, email=$2, bio=$3, updated_at=$4 WHERE id=$5"
+
+	result, err := db.Exec(query, user.UserName, user.Email, user.Bio, time.Now(), user.Id)
+
+	if err != nil {
+		return 0, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+
+	if err != nil {
+		return 0, err
+	}
+
+	return rowsAffected, nil
+
 }

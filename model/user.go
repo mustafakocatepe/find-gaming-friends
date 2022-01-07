@@ -7,7 +7,7 @@ import (
 
 // User is our main model for Users
 type User struct {
-	Id        uint      `json:"id"`
+	Id        int       `json:"id"`
 	UserName  string    `json:"username"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
@@ -20,7 +20,7 @@ type User struct {
 
 // UserDTO is our data transfer object for User
 type UserDTO struct {
-	Id       uint   `json:"id"`
+	Id       int    `json:"id"`
 	UserName string `json:"username"`
 	Email    string `json:"email"`
 	Bio      string `json:"bio"`
@@ -30,6 +30,12 @@ type CreateUserDTO struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type UpdateUserDTO struct {
+	UserName string `json:"username"`
+	Email    string `json:"email"`
+	Bio      string `json:"bio"`
 }
 
 func (user *CreateUserDTO) Validate() error {

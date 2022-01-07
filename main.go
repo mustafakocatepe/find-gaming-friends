@@ -47,7 +47,7 @@ func (a *App) initialize() {
 	user := os.Getenv("DB_USERNAME")
 	password := os.Getenv("DB_PASSWORD")
 	maxOpenConnections, _ := strconv.Atoi(os.Getenv("DB_MAX_OPEN_CONNECTIONS"))
-	//fmt.Println(os.Getenv("CONSOLE_L"))
+	fmt.Println(os.Getenv("CONSOLE_L"))
 
 	a.DB, err = db.ConnectDB(driver, host, database, user, password, port, maxOpenConnections)
 
@@ -67,6 +67,7 @@ func (a *App) routes() {
 	controller := controller.Controller{}
 	a.Router.HandleFunc("/api/v1/users", controller.GetUsers(a.DB)).Methods("GET")
 	a.Router.HandleFunc("/api/v1/users", controller.AddUser(a.DB)).Methods("POST")
+	a.Router.HandleFunc("/api/v1/users/{id}", controller.UpdateUser(a.DB)).Methods("PATCH")
 	a.Router.HandleFunc("/api/v1/users/{id}", controller.RemoveUser(a.DB)).Methods("DELETE")
 
 	a.Router.HandleFunc("/api/v1/login", controller.LoginControl(a.DB)).Methods("POST")

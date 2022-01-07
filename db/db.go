@@ -7,6 +7,7 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
+	"github.com/mustafakocatepe/find-gaming-friends/db/migrate/postgres"
 )
 
 func logFatal(err error) {
@@ -28,6 +29,8 @@ func ConnectDB(driver, host, database, username, password string, port, maxOpenC
 		return nil, err
 	}
 
+	postgres.Migrate(db)
+
 	if err := pingDatabase(db); err != nil {
 		return nil, err
 	}
@@ -46,7 +49,6 @@ func pingDatabase(db *sql.DB) error {
 		time.Sleep(1 * time.Second)
 	}
 
-	//debug.PrintStack()
 	return err
 }
 
