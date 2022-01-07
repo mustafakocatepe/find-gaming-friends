@@ -2,6 +2,7 @@ package userRepository
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/mustafakocatepe/find-gaming-friends/model"
 	"golang.org/x/crypto/bcrypt"
@@ -38,14 +39,34 @@ func (u UserRepository) AddUser(db *sql.DB, user model.User) (int, error) {
 }
 
 func (U UserRepository) RemoveUser(db *sql.DB, id int) (int64, error) {
-	result, err := db.Exec("UPDATE Users SET is_active = false WHERE id = $1", id)
+
+	tx, err := db.Begin()
+	if err != nil {
+		return 0, err
+	}
+
+	result, err := tx.Exec("UPDATE Users SET is_active = false WHERE id = $1", id)
 
 	if err != nil {
 		return 0, err
 	}
 
-	rowsAffected, err := result.RowsAffected()
+	_, err2 := tx.Exec("UPDATE UsersGames SET is_active = false WHERE user_id = $1", id)
 
+	if err2 != nil {
+		rollbackErr := tx.Rollback()
+		if rollbackErr != nil {
+			return 0, rollbackErr
+		}
+		return 0, err2
+	}
+
+	if err := tx.Commit(); err != nil {
+		fmt.Println(err)
+		return 0, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		return 0, err
 	}
