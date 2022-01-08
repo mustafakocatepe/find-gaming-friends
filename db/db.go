@@ -18,17 +18,30 @@ func logFatal(err error) {
 
 func ConnectDB(driver, host, database, username, password string, port, maxOpenConnections int) (*sql.DB, error) {
 
-	dsn, err := parseDSN(driver, host, database, username, password, port)
+	/*dsn, err := parseDSN(driver, host, database, username, password, port)
+	if err != nil {
+		return nil, err
+	}*/
+
+	url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
+		username,
+		password,
+		host,
+		port,
+		database)
+
+	db, err := sql.Open(driver, url)
 	if err != nil {
 		return nil, err
 	}
 
-	db, err := sql.Open(driver, dsn)
+	time.Sleep(10 * time.Second)
+
+	err = postgres.Migrate(db)
+
 	if err != nil {
 		return nil, err
 	}
-
-	postgres.Migrate(db)
 
 	if err := pingDatabase(db); err != nil {
 		return nil, err

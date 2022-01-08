@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+
 	"github.com/mustafakocatepe/find-gaming-friends/model"
 	userRepository "github.com/mustafakocatepe/find-gaming-friends/repository/user"
 	"github.com/mustafakocatepe/find-gaming-friends/utils"
