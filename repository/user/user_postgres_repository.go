@@ -49,17 +49,31 @@ func (U UserRepository) RemoveUser(db *sql.DB, id int) (int64, error) {
 	result, err := tx.Exec("UPDATE Users SET is_active = false WHERE id = $1", id)
 
 	if err != nil {
-		return 0, err
-	}
-
-	_, err2 := tx.Exec("UPDATE UsersGames SET is_active = false WHERE user_id = $1", id)
-
-	if err2 != nil {
 		rollbackErr := tx.Rollback()
 		if rollbackErr != nil {
 			return 0, rollbackErr
 		}
-		return 0, err2
+		return 0, err
+	}
+	var count int
+
+	resultCount, _ := tx.Query("SELECT COUNT(*) FROM UserGames WHERE user_id = $1 AND is_active = true", id)
+
+	for resultCount.Next() {
+		_ = resultCount.Scan(count)
+	}
+
+	if count > 0 {
+		_, err2 := tx.Exec("UPDATE UserGames SET is_active = false WHERE user_id = $1", id)
+
+		if err2 != nil {
+			rollbackErr := tx.Rollback()
+			if rollbackErr != nil {
+				return 0, rollbackErr
+			}
+			return 0, err2
+		}
+
 	}
 
 	if err := tx.Commit(); err != nil {

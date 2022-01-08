@@ -14,13 +14,13 @@ services:
     env_file:
       - .env
     depends_on: 
-      - fullstack-postgres # This service depends on redis. Start that first.
+      - postgres-database # This service depends on redis. Start that first.
     # links:
     #  - postgres
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - mynetwork
      
-  fullstack-postgres:
+  postgres-database:
     container_name: full_db_postgres
     image: postgres
     environment:
@@ -47,7 +47,7 @@ services:
       - "${PGADMIN_PORT:-5050}:80"
     restart: always
     depends_on:
-      - fullstack-postgres 
+      - postgres-database 
     networks:
       - mynetwork
     volumes:

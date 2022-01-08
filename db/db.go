@@ -35,8 +35,6 @@ func ConnectDB(driver, host, database, username, password string, port, maxOpenC
 		return nil, err
 	}
 
-	time.Sleep(10 * time.Second)
-
 	err = postgres.Migrate(db)
 
 	if err != nil {
