@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/mustafakocatepe/find-gaming-friends/model"
-	gameRepository "github.com/mustafakocatepe/find-gaming-friends/repository/game"
+	gameRepository "github.com/mustafakocatepe/find-gaming-friends/store/game"
 	"github.com/mustafakocatepe/find-gaming-friends/utils"
 )
 

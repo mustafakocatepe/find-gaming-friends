@@ -8,7 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/mustafakocatepe/find-gaming-friends/model"
-	userGamesRepository "github.com/mustafakocatepe/find-gaming-friends/repository/usersgames"
+	userGamesRepository "github.com/mustafakocatepe/find-gaming-friends/store/usersgames"
 	"github.com/mustafakocatepe/find-gaming-friends/utils"
 )
 

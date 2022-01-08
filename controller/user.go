@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/mustafakocatepe/find-gaming-friends/model"
-	userRepository "github.com/mustafakocatepe/find-gaming-friends/repository/user"
+	userRepository "github.com/mustafakocatepe/find-gaming-friends/store/user"
 	"github.com/mustafakocatepe/find-gaming-friends/utils"
 	"golang.org/x/crypto/bcrypt"
 )

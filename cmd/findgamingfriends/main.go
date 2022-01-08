@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -21,7 +23,12 @@ type App struct {
 
 func main() {
 
-	if err := godotenv.Load(); err != nil {
+	_, b, _, _ := runtime.Caller(0)
+
+	// Root folder of this project
+	ProjectRootPath := filepath.Join(filepath.Dir(b), "../../")
+
+	if err := godotenv.Load(ProjectRootPath + "/.env"); err != nil {
 		panic(err)
 	}
 
@@ -47,10 +54,9 @@ func (a *App) initialize() {
 	user := os.Getenv("DB_USERNAME")
 	password := os.Getenv("DB_PASSWORD")
 	maxOpenConnections, _ := strconv.Atoi(os.Getenv("DB_MAX_OPEN_CONNECTIONS"))
-	runType := os.Getenv("RUN_TYPE")
 	fmt.Println(os.Getenv("CONSOLE_L"))
 
-	a.DB, err = db.ConnectDB(driver, host, database, user, password, runType, port, maxOpenConnections)
+	a.DB, err = db.ConnectDB(driver, host, database, user, password, port, maxOpenConnections)
 
 	if err != nil {
 		log.Fatal(err)
