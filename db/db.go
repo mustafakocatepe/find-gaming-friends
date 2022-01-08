@@ -16,12 +16,7 @@ func logFatal(err error) {
 	}
 }
 
-func ConnectDB(driver, host, database, username, password string, port, maxOpenConnections int) (*sql.DB, error) {
-
-	/*dsn, err := parseDSN(driver, host, database, username, password, port)
-	if err != nil {
-		return nil, err
-	}*/
+func ConnectDB(driver, host, database, username, password, runType string, port, maxOpenConnections int) (*sql.DB, error) {
 
 	url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
 		username,
@@ -34,8 +29,9 @@ func ConnectDB(driver, host, database, username, password string, port, maxOpenC
 	if err != nil {
 		return nil, err
 	}
-
-	err = postgres.Migrate(db)
+	if runType != "runType" {
+		err = postgres.Migrate(db)
+	}
 
 	if err != nil {
 		return nil, err

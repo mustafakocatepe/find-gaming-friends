@@ -22,4 +22,4 @@ RUN go build -o main .
 EXPOSE 8080
 
 # Run the executable
-CMD ["./main"]
+CMD ["./cmd/findgamingfriends/main"]

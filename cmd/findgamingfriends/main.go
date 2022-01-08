@@ -47,9 +47,10 @@ func (a *App) initialize() {
 	user := os.Getenv("DB_USERNAME")
 	password := os.Getenv("DB_PASSWORD")
 	maxOpenConnections, _ := strconv.Atoi(os.Getenv("DB_MAX_OPEN_CONNECTIONS"))
+	runType := os.Getenv("RUN_TYPE")
 	fmt.Println(os.Getenv("CONSOLE_L"))
 
-	a.DB, err = db.ConnectDB(driver, host, database, user, password, port, maxOpenConnections)
+	a.DB, err = db.ConnectDB(driver, host, database, user, password, runType, port, maxOpenConnections)
 
 	if err != nil {
 		log.Fatal(err)
@@ -77,4 +78,6 @@ func (a *App) routes() {
 
 	a.Router.HandleFunc("/api/v1/usergames/{id}", controller.GetUserGames(a.DB)).Methods("GET")
 	a.Router.HandleFunc("/api/v1/usergames", controller.AddUserGames(a.DB)).Methods("POST")
+
+	a.Router.HandleFunc("/api/v1/database", controller.CreateDatabaseTables(a.DB)).Methods("POST")
 }
