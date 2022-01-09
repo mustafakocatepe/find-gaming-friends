@@ -4,7 +4,7 @@ Kişilerin kayıt olarak kendi oyun zevklerine göre oyun arkadaşları bulması
 
 ## Açıklama
 
---
+[Collection](https://github.com/mustafakocatepe/find-gaming-friends/blob/main/find-gaming-friends.postman_collection.json) indirilerek api'ler Postman üzerinden test edilebilir.
 
 ## Kullanım Bilgileri
 
@@ -50,7 +50,3 @@ password : 1234
     "success": false
 }
 ```
-
-## Neler kullandim ? 
-
----
